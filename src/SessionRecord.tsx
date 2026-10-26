@@ -1,5 +1,6 @@
 import React, {useMemo,useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
+import Svg,{Path} from 'react-native-svg';
 import {Ionicons} from '@expo/vector-icons';
 import {completedSets, Session} from './model';
 import {GlassSurface} from './GlassSurface';
@@ -16,17 +17,21 @@ export function SessionRecord({session}:{session:Session}) {
   <View style={s.header}><View style={s.badge}><Ionicons name="checkmark-circle" size={15} color={c.accent}/><Text style={s.badgeText}>SESSION COMPLETE</Text></View><Text style={s.title}>{session.category}</Text><Text style={s.muted}>{new Date(session.started).toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'})} · {new Date(session.started).toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'})}</Text></View>
   <View style={s.summary}><GlassSurface/><View style={s.metric}><Text style={s.number}>{exerciseCount}<Text style={s.total}> / {session.entries.length}</Text></Text><Text style={s.muted}>Exercises recorded</Text></View><View style={s.divider}/><View style={s.metric}><Text style={s.number}>{recorded.length}</Text><Text style={s.muted}>Completed sets</Text></View></View>
   <View style={s.section}><Text style={s.sectionTitle}>Exercise breakdown</Text><Text style={s.muted}>Tap an exercise to view its sets</Text></View>
-  {session.entries.map((entry,i)=>{
+  <View>{session.entries.map((entry,i)=>{
+   const background=[c.popLilac,c.popOrange,c.popYellow,c.popBlue][i%4];
+   const foreground=i%4===3?'#FFFFFF':c.popInk;
+   const s=createStyles({...c,ink:foreground,muted:foreground,accent:foreground,line:foreground+'30'});
    const done=entry.sets.filter(r=>r.complete&&!entry.skipped);
    const best=done.length?Math.max(...done.map(r=>Number(r.weight))):undefined;
    const open=expanded===i;
-   return <View key={`${entry.exerciseId}-${i}`} style={s.card}><GlassSurface/>
-    <Pressable accessibilityRole="button" accessibilityState={{expanded:open}} accessibilityLabel={`${entry.name}, ${entry.skipped?'skipped':`${done.length} of ${entry.sets.length} sets complete`}`} onPress={()=>setExpanded(open?null:i)} style={s.exerciseHead}>
+   return <View key={`${entry.exerciseId}-${i}`} style={{marginTop:i?-24:0,zIndex:i}}>
+    <View pointerEvents="none" style={{position:'absolute',top:0,left:0,right:0}}><Svg width="100%" height={95} viewBox="0 0 360 95" preserveAspectRatio="none"><Path d="M0 95 V25 Q0 0 25 0 H116 C146 0 145 19 180 19 H335 Q360 19 360 44 V95 Z" fill={background}/></Svg></View>
+    <Pressable accessibilityRole="button" accessibilityState={{expanded:open}} accessibilityLabel={`${entry.name}, ${entry.skipped?'skipped':`${done.length} of ${entry.sets.length} sets complete`}`} onPress={()=>setExpanded(open?null:i)} style={[s.exerciseHead,{paddingTop:28,minHeight:94}]}>
      <View style={s.index}><Text style={s.indexText}>{String(i+1).padStart(2,'0')}</Text></View><View style={{flex:1,gap:5}}><Text style={s.exerciseName}>{entry.name}</Text><Text style={s.muted}>{entry.skipped?'Skipped':`${done.length}/${entry.sets.length} sets complete${best!==undefined?` · Heaviest ${best} kg`:''}`}</Text></View><Ionicons name={open?'chevron-up':'chevron-down'} size={17} color={c.muted}/>
     </Pressable>
-    {open&&<View style={s.table}>{entry.skipped?<Text style={[s.muted,{paddingVertical:14}]}>This exercise was skipped.</Text>:<><View style={s.tableRow}><Text style={[s.column,s.columnLabel,{flex:.5}]}>SET</Text><Text style={[s.column,s.columnLabel]}>KG</Text><Text style={[s.column,s.columnLabel]}>REPS</Text><Text style={[s.column,s.columnLabel]}>TARGET</Text><Text style={[s.column,s.columnLabel]}>STATUS</Text></View>{entry.sets.map((r,j)=><View key={j} style={s.tableRow}><Text style={[s.column,{flex:.5,color:c.muted}]}>{j+1}</Text><Text style={s.column}>{r.weight||'—'}</Text><Text style={s.column}>{r.reps}</Text><Text style={[s.column,{color:c.muted}]}>{r.targetReps}</Text><View style={[s.column,s.status]}><Ionicons name={r.complete?'checkmark-circle':'ellipse-outline'} size={17} color={r.complete?c.accent:c.muted}/><Text style={{fontSize:9,color:r.complete?c.accent:c.muted}}>{r.complete?'Done':'Not done'}</Text></View></View>)}</>}</View>}
+    <View style={{backgroundColor:background,paddingBottom:i===session.entries.length-1?10:24,borderBottomLeftRadius:i===session.entries.length-1?24:0,borderBottomRightRadius:i===session.entries.length-1?24:0}}>{open&&<View style={s.table}>{entry.skipped?<Text style={[s.muted,{paddingVertical:14}]}>This exercise was skipped.</Text>:<><View style={s.tableRow}><Text style={[s.column,s.columnLabel,{flex:.5}]}>SET</Text><Text style={[s.column,s.columnLabel]}>KG</Text><Text style={[s.column,s.columnLabel]}>REPS</Text><Text style={[s.column,s.columnLabel]}>TARGET</Text><Text style={[s.column,s.columnLabel]}>STATUS</Text></View>{entry.sets.map((r,j)=><View key={j} style={s.tableRow}><Text style={[s.column,{flex:.5,color:c.muted}]}>{j+1}</Text><Text style={s.column}>{r.weight||'—'}</Text><Text style={s.column}>{r.reps}</Text><Text style={[s.column,{color:c.muted}]}>{r.targetReps}</Text><View style={[s.column,s.status]}><Ionicons name={r.complete?'checkmark-circle':'ellipse-outline'} size={17} color={r.complete?c.accent:c.muted}/><Text style={{fontSize:9,color:r.complete?c.accent:c.muted}}>{r.complete?'Done':'Not done'}</Text></View></View>)}</>}</View>}</View>
    </View>;
-  })}
+  })}</View>
   <Text style={s.note}>Only completed sets count toward progress. This record keeps the exercise names and targets from the day you trained.</Text>
  </View>;
 }
