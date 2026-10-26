@@ -1,0 +1,1 @@
+{"extends":"expo/tsconfig.base","compilerOptions":{"strict":true,"lib":["ES2023","DOM"]},"exclude":["src/*.test.ts"]}
