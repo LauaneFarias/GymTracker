@@ -110,3 +110,9 @@ test('backups restore full records and reject malformed sessions',async()=>{
  assert.throws(()=>parseBackup(JSON.stringify({...data,sessions:[{id:'bad'}]})));
  assert.throws(()=>parseBackup(JSON.stringify({format:'gym-tracker-backup',version:2,data})));
 });
+test('cardio is logged as a finished session without sets',async()=>{
+ const {recordCardio}=await import('./model');const data=emptyData();const started=new Date(Date.now()-25*60000);
+ const logged=recordCardio(data,'Rowing',25,started).sessions[0];
+ assert.equal(logged.kind,'cardio');assert.equal(logged.category,'Cardio');assert.equal(logged.machine,'Rowing');assert.equal(logged.minutes,25);assert.equal(logged.entries.length,0);assert.ok(logged.finished);
+ assert.throws(()=>recordCardio(data,'Bike',0.5,started));
+});

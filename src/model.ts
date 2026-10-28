@@ -1,9 +1,9 @@
-export const categories = ['Full Legs', 'Full Upper', 'Full Body', 'Pilates', 'Leg Day', 'Arms Day'] as const;
+export const categories = ['Full Legs', 'Full Upper', 'Full Body', 'Pilates', 'Leg Day', 'Arms Day', 'Cardio'] as const;
 export type Category = typeof categories[number];
 export type Exercise = { id: string; progressId?: string; videoUrl?: string; category: Category; name: string; sets: number; reps: number };
 export type SetRecord = { weight: string; reps: string; targetReps: number; complete: boolean };
 export type Entry = { exerciseId: string; name: string; videoUrl?: string; skipped: boolean; sets: SetRecord[]; previous: string[] };
-export type Session = { kind?: 'class'; note?: string; id: string; category: Category; started: string; finished?: string; paused: boolean; entries: Entry[] };
+export type Session = { kind?: 'class'|'cardio'; machine?: string; minutes?: number; note?: string; id: string; category: Category; started: string; finished?: string; paused: boolean; entries: Entry[] };
 export type Data = { version: 1; exercises: Exercise[]; sessions: Session[]; active?: Session; templatesVersion?: 1 };
 export const emptyData = (): Data => ({ version: 1, exercises: [], sessions: [] });
 export const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -36,4 +36,10 @@ export function recordPilatesClass(data:Data,date:string,note?:string):Data {
  if(data.sessions.some(s=>s.kind==='class'&&s.category==='Pilates'&&key(new Date(s.started))===date))throw new Error('A Pilates class is already recorded for this day.');
  const time=(date===key(new Date())?new Date():d).toISOString();
  return {...data,sessions:[{id:uid(),kind:'class' as const,note:note?.trim()||undefined,category:'Pilates' as const,started:time,finished:time,paused:false,entries:[]},...data.sessions].sort((a,b)=>b.started.localeCompare(a.started))};
+}
+
+// Cardio is logged like attendance: no sets, just the machine and minutes done.
+export function recordCardio(data:Data,machine:string,minutes:number,started:Date,finished=new Date()):Data {
+ if(!machine.trim()||!Number.isFinite(minutes)||minutes<1)throw new Error('Do at least one minute of cardio to log it.');
+ return {...data,sessions:[{id:uid(),kind:'cardio' as const,machine:machine.trim(),minutes:Math.round(minutes),category:'Cardio' as const,started:started.toISOString(),finished:finished.toISOString(),paused:false,entries:[]},...data.sessions].sort((a,b)=>b.started.localeCompare(a.started))};
 }

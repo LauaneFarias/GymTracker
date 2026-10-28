@@ -1,1 +1,34 @@
-{"expo":{"name":"Gym Tracker","slug":"gym-tracker","version":"1.0.0","orientation":"portrait","userInterfaceStyle":"light","ios":{"supportsTablet":true,"bundleIdentifier":"com.gymtracker.app"},"android":{"package":"com.gymtracker.app"},"web":{"name":"Gym Tracker"}}}
+{
+  "expo": {
+    "name": "Gym Tracker",
+    "slug": "gym-tracker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gymtracker.app"
+    },
+    "android": {
+      "package": "com.gymtracker.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#D8B5F2"
+      }
+    },
+    "web": {
+      "name": "Gym Tracker"
+    },
+    "plugins": [
+      "expo-sharing",
+      "expo-font"
+    ],
+    "icon": "./assets/icon.png",
+    "extra": {
+      "eas": {
+        "projectId": "68ea84ba-da2a-46fc-9449-605f39ff5a62"
+      }
+    }
+  }
+}

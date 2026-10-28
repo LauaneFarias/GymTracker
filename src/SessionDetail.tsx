@@ -1,7 +1,7 @@
-import {CatCameo} from './CatCameo';
+import {TrainingCat} from './TrainingCat';
 import React, {useMemo,useRef} from 'react';
 import {Animated, Platform, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
+import {Ionicons} from './Icon';
 import {Session} from './model';
 import {SessionRecord} from './SessionRecord';
 import {Colors} from './theme';
@@ -17,7 +17,7 @@ export function SessionDetail({session,onClose}:{session:Session;onClose:()=>voi
   </View>
   <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.content} scrollEventThrottle={16} onScroll={event=>offset.setValue(Math.max(0,event.nativeEvent.contentOffset.y))}>
    <SessionRecord session={session}/>{!!session.note&&<View style={{marginTop:20,padding:20,borderRadius:20,borderWidth:1,borderColor:c.line,backgroundColor:c.card,gap:8}}><Text style={{color:c.ink,fontWeight:'700',fontSize:16}}>How you felt</Text><Text style={{color:c.ink,fontSize:14,lineHeight:22}}>{session.note}</Text></View>}
-  <View style={{alignItems:'center',marginTop:26,gap:8}}><CatCameo width={150}/><Text style={{color:c.muted,fontSize:12,textAlign:'center'}}>Session logged. Cat nap approved.</Text></View>
+  <View style={{alignItems:'center',marginTop:26,gap:8}}><TrainingCat width={110}/><Text style={{color:c.muted,fontSize:12,textAlign:'center'}}>Session logged. Cat nap approved.</Text></View>
   </ScrollView>
   <View style={s.footer}><Pressable accessibilityRole="button" onPress={onClose} style={({pressed})=>[s.close,{opacity:pressed?.8:1}]}><Text style={s.closeLabel}>Close session</Text></Pressable></View>
  </View>;

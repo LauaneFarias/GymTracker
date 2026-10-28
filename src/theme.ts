@@ -1,6 +1,6 @@
 // Pop strength · semantic tokens shared by every screen.
 export const colors = {
- popBlue:'#4854C7', popOrange:'#F36338', popLilac:'#D8B5F2', popPink:'#D8B5F2', popYellow:'#E2F56B', popInk:'#292929', popRule:'rgba(41,41,41,0.18)', bg:'#FAFAFB', onAccent:'#FFFFFF', frostHighlight:0.7, headerTint:'rgba(0,0,0,0.05)', headerGlass:'rgba(250,250,251,0.96)', done:'#2F6851', doneSurface:'#DCEDE3', frostDeep:'#D8B5F2', frostBase:'rgba(255,255,255,0.40)', frostEdge:'rgba(255,255,255,0.68)', paperCool:'#FAFAFB', paperWarm:'#FAFAFB',
+ popBlue:'#4854C7', popOrange:'#F36338', popLilac:'#D8B5F2', popPink:'#F6A9CB', popYellow:'#E2F56B', popInk:'#292929', popRule:'rgba(41,41,41,0.18)', bg:'#FAFAFB', onAccent:'#FFFFFF', frostHighlight:0.7, headerTint:'rgba(0,0,0,0.05)', headerGlass:'rgba(250,250,251,0.96)', done:'#2F6851', doneSurface:'#DCEDE3', frostDeep:'#D8B5F2', frostBase:'rgba(255,255,255,0.40)', frostEdge:'rgba(255,255,255,0.68)', paperCool:'#FAFAFB', paperWarm:'#FAFAFB',
  dockGlass:'rgba(255,255,255,0.72)', dockEdge:'rgba(255,255,255,0.9)', dockIcon:'rgba(98,17,34,0.08)',
  card:'rgba(255,255,255,0.65)', ink:'#292929', muted:'#66666D', line:'rgba(42,36,51,0.13)', accent:'#292929',
  coral:'#F36338', blue:'#4854C7', gradientText:'#292929', gradientMuted:'#4F3D65', photoGlass:'rgba(22,27,30,0.48)', photoEdge:'rgba(255,255,255,0.32)', photoOverlay:'rgba(12,17,21,0.25)',
